@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cápsula Digital - Top Secret</title>
+    <style>
+        :root {
+            --neon-green: #00ff41;
+            --dark-bg: #0a0a0a;
+            --hacker-font: 'Courier New', Courier, monospace;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: var(--dark-bg);
+            color: var(--neon-green);
+            font-family: var(--hacker-font);
+            overflow: hidden;
+            height: 100vh;
+            cursor: none; /* Ocultamos el cursor real para usar el guardián */
+        }
+
+        /* El Guardián (Sigue al mouse) */
+        #guardian {
+            position: absolute;
+            width: 80px;
+            pointer-events: none; /* Para que no interfiera con el clic del cofre */
+            transition: transform 0.1s ease-out;
+            z-index: 999;
+        }
+
+        /* El Cofre (Objetivo) */
+        #cofre-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        #cofre {
+            width: 150px;
+            cursor: pointer;
+            filter: drop-shadow(0 0 10px var(--neon-green));
+            transition: transform 0.3s ease;
+        }
+
+        #cofre:hover {
+            transform: scale(1.1) rotate(5deg);
+        }
+
+        /* Ventana Emergente (Modal) */
+        #modal {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(0, 0, 0, 0.9);
+            border: 2px solid var(--neon-green);
+            box-shadow: 0 0 30px var(--neon-green);
+            padding: 30px;
+            text-align: center;
+            z-index: 1000;
+            border-radius: 10px;
+        }
+
+        #modal h2 {
+            margin-top: 0;
+            letter-spacing: 3px;
+        }
+
+        #tesoro-img {
+            max-width: 250px;
+            border: 1px solid var(--neon-green);
+            margin-top: 15px;
+        }
+
+        .close-btn {
+            margin-top: 20px;
+            background: var(--neon-green);
+            color: black;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        /* Líneas de escaneo estilo hacker */
+        .scanline {
+            width: 100%;
+            height: 100px;
+            z-index: 10;
+            background: linear-gradient(0deg, rgba(0, 255, 65, 0) 0%, rgba(0, 255, 65, 0.1) 50%, rgba(0, 255, 65, 0) 100%);
+            opacity: 0.1;
+            position: absolute;
+            bottom: 100%;
+            animation: scan 4s linear infinite;
+        }
+
+        @keyframes scan {
+            to { bottom: -100px; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="scanline"></div>
+
+    <img src="guardian.png" id="guardian" alt="Guardián">
+
+    <div id="cofre-container">
+        <div style="text-align: center;">
+            <p style="margin-bottom: 20px;">[ SISTEMA PROTEGIDO ]</p>
+            <img src="cofre.png" id="cofre" alt="Cofre de Seguridad" onclick="abrirCapsula()">
+        </div>
+    </div>
+
+    <div id="modal">
+        <h2>¡ACCESO CONCEDIDO!</h2>
+        <p>Bienvenido, Agente <strong>Max</strong></p>
+        <img src="tesoro.gif" id="tesoro-img" alt="Tesoro Digital">
+        <br>
+        <button class="close-btn" onclick="cerrarModal()">CERRAR SESIÓN</button>
+    </div>
+
+    <script>
+        const guardian = document.getElementById('guardian');
+        const modal = document.getElementById('modal');
+
+        // Lógica de movimiento del Guardián
+        document.addEventListener('mousemove', (e) => {
+            // Ajustamos para que el centro de la imagen coincida con el cursor
+            const x = e.clientX - 40; 
+            const y = e.clientY - 40;
+            
+            guardian.style.left = `${x}px`;
+            guardian.style.top = `${y}px`;
+        });
+
+        // Interacciones
+        function abrirCapsula() {
+            modal.style.display = 'block';
+        }
+
+        function cerrarModal() {
+            modal.style.display = 'none';
+        }
+    </script>
+</body>
+</html>
